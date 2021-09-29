@@ -9,16 +9,22 @@
     <link rel="dns-prefetch" href="http://example.com">
     <title>
       
-        Tag: hexo | 
+        CMake编译文件 | 
             Lidan&#39;s blog
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Lidan&#39;s blog">
-<meta property="og:url" content="http://example.com/tags/hexo/index.html">
+    <meta name="description" content="编译过程： gcc -E main.c -o main.i   通过-E生成预处理文件 gcc -S main.i   对预处理文件进行编译生成main.s gcc -c main.s 对文件进一步汇编生成main.o gcc main.o -o main  最后生成可执行文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMake编译文件">
+<meta property="og:url" content="http://example.com/2021/09/29/CMake%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6/index.html">
 <meta property="og:site_name" content="Lidan&#39;s blog">
+<meta property="og:description" content="编译过程： gcc -E main.c -o main.i   通过-E生成预处理文件 gcc -S main.i   对预处理文件进行编译生成main.s gcc -c main.s 对文件进一步汇编生成main.o gcc main.o -o main  最后生成可执行文件">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-09-29T01:34:34.000Z">
+<meta property="article:modified_time" content="2021-09-29T01:34:50.012Z">
 <meta property="article:author" content="Li Dan">
+<meta property="article:tag" content="cmake">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
       
         <link rel="alternative" href="/atom.xml" title="Lidan&#39;s blog" type="application/atom+xml">
@@ -150,105 +156,262 @@
           </div>
           <div id="js-content" class="content-ll">
             
-  
-  
+
+
+
+
+        <article id="post-CMake编译文件" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/08/16/hexo+GitHub%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="archive-article-date">
-  	<time datetime="2021-08-16T04:52:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/08/16/hexo+GitHub%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">hexo+GitHub搭建个人博客</a>
+    <h1 class="article-title" itemprop="name">
+      CMake编译文件
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2021/09/29/CMake%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6/" class="archive-article-date">
+  	<time datetime="2021-09-29T01:34:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-09-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>编译过程：</p>
+<p><code>gcc -E main.c -o main.i </code>  通过<code>-E</code>生成预处理文件</p>
+<p><code>gcc -S main.i </code>  对预处理文件进行编译生成main.s</p>
+<p><code>gcc -c main.s</code> 对文件进一步汇编生成main.o</p>
+<p><code>gcc main.o -o main </code> 最后生成可执行文件</p>
+<span id="more"></span></li>
+<li><p>你或许听过好几种 Make 工具，例如 <a target="_blank" rel="noopener" href="https://www.hahack.com/wiki/tools-makefile.html">GNU Make</a> ，QT 的 <a target="_blank" rel="noopener" href="http://qt-project.org/doc/qt-4.8/qmake-manual.html">qmake</a> ，微软的 <a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/ms930369.aspx">MS nmake</a>，BSD Make（<a target="_blank" rel="noopener" href="http://www.freebsd.org/doc/en/books/pmake/">pmake</a>），<a target="_blank" rel="noopener" href="http://makepp.sourceforge.net/">Makepp</a>，等等。这些 Make 工具遵循着不同的规范和标准，所执行的 Makefile 格式也千差万别。这样就带来了一个严峻的问题：如果软件想跨平台，必须要保证能够在不同平台编译。而如果使用上面的 Make 工具，就得为每一种标准写一次 Makefile ，这将是一件让人抓狂的工作。</p>
+<p>CMake 就是针对上面问题所设计的工具：它首先允许开发者编写一种平台无关的 CMakeList.txt 文件来定制整个编译流程，然后再根据目标用户的平台进一步生成所需的本地化 Makefile 和工程文件，如 Unix 的 Makefile 或 Windows 的 Visual Studio 工程。从而做到“Write once, run everywhere”。显然，CMake 是一个比上述几种 make 更高级的编译配置工具。一些使用 CMake 作为项目架构系统的知名开源项目有 <a target="_blank" rel="noopener" href="http://www.vtk.org/">VTK</a>、<a target="_blank" rel="noopener" href="http://www.itk.org/">ITK</a>、<a target="_blank" rel="noopener" href="http://kde.org/">KDE</a>、<a target="_blank" rel="noopener" href="http://www.opencv.org.cn/opencvdoc/2.3.2/html/modules/core/doc/intro.html">OpenCV</a>、<a target="_blank" rel="noopener" href="http://www.openscenegraph.org/">OSG</a> 等。</p>
+</li>
+<li><p>在 linux 平台下使用 CMake 生成 Makefile 并编译的流程如下：</p>
+<ol>
+<li>编写 CMake 配置文件 CMakeLists.txt 。</li>
+<li>执行命令 <code>cmake PATH</code> 或者 <code>ccmake PATH</code> 生成 Makefile（<code>ccmake</code> 和 <code>cmake</code> 的区别在于前者提供了一个交互式的界面）。其中， <code>PATH</code> 是 CMakeLists.txt 所在的目录。</li>
+<li>使用 <code>make</code> 命令进行编译。</li>
+</ol>
+</li>
+<li><p>demo1的Cmake的简单实现</p>
+<p>demo1中有功能为打印<code>hello world</code>的<code>main.cpp</code>文件或者其他<code>.cpp</code>文件。</p>
+<p>首先新建并编辑CMakeLists.txt文件：<code>vim CMakeLists.txt</code></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMAKE_MINIMUM_REQUIRED</span>(VERSION <span class="number">3.10</span>)  <span class="comment">#版本号</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">PROJECT</span>(demo1)  <span class="comment">#工程名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_EXECUTABLE</span>(demo1 main.cpp)  <span class="comment">#可执行文件，有main.cpp生成demo1的可执行文件</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在当前文件下执行cmake操作：<code>cmake ./</code>    其中，<code> ./</code>表示在当前文件下。</p>
+<p>可以查看文件中已经有Makefile，就可以执行<code>make</code>命令进行编译，生成可执行文件demo1。</p>
+</li>
+<li><p>demo2的CMake实现（demo2中存在多个.cpp文件用变量来代替）</p>
+<p>demo2中存在两个cpp文件，main.cpp和test1.cpp。</p>
+<p>首先新建并编辑CMakeLists.txt文件：<code>vim CMakeLists.txt</code></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMAKE_MINIMUM_REQUIRED</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">PROJECT</span>(demo2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">AUX_SOURCE_DIRECTORY</span>(./ DIR_SRCS)  <span class="comment">#./为当前文件夹下，发现一个目录下所有的源代码文件并将列表存储在一个变量中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_EXECUTABLE</span>(demo2 <span class="variable">$&#123;DIR_SRCS&#125;</span>)  <span class="comment">#这里只使用变量就可以调用所有的源文件cpp</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在当前文件下执行cmake操作：<code>cmake ./</code>    其中，<code> ./</code>表示在当前文件下。</p>
+<p>可以查看文件中已经有Makefile，就可以执行<code>make</code>命令进行编译，生成可执行文件demo2。</p>
+</li>
+<li><p>demo3的CMake实现（demo3中多目录多文件）</p>
+<p>demo3中存在多个文件夹，且文件夹中也有源文件cpp等。</p>
+<ul>
+<li>先对demo3中的文件夹进行CMake，进入demo3中子文件夹的CMakeLists.txt：</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">AUX_SOURCE_DIRECTORY</span>(. DIR_LIB_SRCS)  <span class="comment">#.为当前文件夹下，发现一个目录下所有的源代码文件并将列表存储在一个变量中</span></span><br><span class="line"><span class="keyword">add_library</span>(Mylib STATIC <span class="variable">$&#123;DIR_LIB_SRCS&#125;</span>)  <span class="comment">#生成静态库，提供外面使用</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后对demo3进行总的CMake,编辑demo3文件中的CMakeLists.txt：</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMAKE_MINIMUM_REQUIRED</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">PROJECT</span>(demo3)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_SUBDIRECTORY</span>(./mylib)  <span class="comment">#向当前工程添加存放源文件的子目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">AUX_SOURCE_DIRECTORY</span>(./ DIR_SRCS)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_EXECUTABLE</span>(demo3 <span class="variable">$&#123;DIR_SRCS&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">TARGET_LINK_LIBRARIES</span>(demo3 Mylib)  <span class="comment">#为项目demo3添加需要链接的共享库</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在当前文件下执行cmake操作：<code>cmake ./</code>    其中，<code> ./</code>表示在当前文件下。</p>
+<p>可以查看文件中已经有Makefile，就可以执行<code>make</code>命令进行编译，生成可执行文件demo3。</p>
+</li>
+<li><p>demo4的CMake实现（标准工程）</p>
+<p>在demo4中创建如下工程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── build</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">├── mylib</span><br><span class="line">│   ├── CMakeLists.txt</span><br><span class="line">│   ├── test1.cpp</span><br><span class="line">│   └── test1.hpp</span><br><span class="line">└── src</span><br><span class="line">    ├── CMakeLists.txt</span><br><span class="line">    └── main.cpp</span><br></pre></td></tr></table></figure>
+
+<p>首先编辑src中的CMakeLists.txt：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INCLUDE_DIRECTORIES</span>(<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/mylib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">AUX_SOURCE_DIRECTORY</span>(./ DIR_SRCS)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_EXECUTABLE</span>(demo4 <span class="variable">$&#123;DIR_SRCS&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">TARGET_LINK_LIBRARIES</span>(demo4 Mylib)</span><br></pre></td></tr></table></figure>
+
+<p>编辑mylib中的CMakeLists.txt:</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">AUX_SOURCE_DIRECTORY</span>(. DIR_LIB_SRCS)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_LIBRARY</span>(Mylib STATIC <span class="variable">$&#123;DIR_LIB_SRCS&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>编辑总的CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMAKE_MINIMUM_REQUIRED</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">PROJECT</span>(demo4)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_SUBDIRECTORY</span>(./mylib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_SUBDIRECTORY</span>(./src)</span><br></pre></td></tr></table></figure>
+
+<p>最后执行编译和运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> build    <span class="comment">#在build中编译</span></span><br><span class="line">cmake ..    <span class="comment"># ..为上一级目录，因为CMakeLists.txt在上一级</span></span><br><span class="line">make</span><br><span class="line">./src/demo4  <span class="comment">#运行demo4</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">cmake</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">github</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+  <div class="share-btn share-icons tooltip-left">
+    <div class="tooltip tooltip-east">
+      <span class="tooltip-item">
+        <a href="javascript:;" class="share-sns share-outer">
+          <i class="icon icon-share"></i>
+        </a>
+      </span>
+      <span class="tooltip-content">
+        <div class="share-wrap">
+          <div class="share-icons">
+            <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+              <i class="icon icon-weibo"></i>
+            </a>
+            <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+              <i class="icon icon-weixin"></i>
+            </a>
+            <a class="qq share-sns" href="javascript:;" data-type="qq">
+              <i class="icon icon-qq"></i>
+            </a>
+            <a class="douban share-sns" href="javascript:;" data-type="douban">
+              <i class="icon icon-douban"></i>
+            </a>
+            <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+              <i class="icon icon-qzone"></i>
+            </a>
+            <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+              <i class="icon icon-facebook"></i>
+            </a>
+            <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+              <i class="icon icon-twitter"></i>
+            </a>
+            <a class="google share-sns" href="javascript:;" data-type="google">
+              <i class="icon icon-google"></i>
+            </a>
+          </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </span>
+    </div>
+  </div>
+
+  <div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img
+        src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://dongshuyan.github.io/021/09/29/CMake%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6/"
+        alt="微信分享二维码">
+    </div>
+  </div>
+
+  <div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/08/16/hexo%E6%8E%A8%E9%80%81%E5%88%B0%E8%BF%9C%E7%AB%AF%E5%A4%B1%E8%B4%A5/" class="archive-article-date">
-  	<time datetime="2021-08-16T04:52:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-16</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2021/09/29/makefile%E7%BC%96%E8%AF%91%E6%96%87%E4%BB%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          makefile编译文件
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/27/markdown%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">markdown数学公式</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/08/16/hexo%E6%8E%A8%E9%80%81%E5%88%B0%E8%BF%9C%E7%AB%AF%E5%A4%B1%E8%B4%A5/">hexo推送到远端失败</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">hexo d</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    目录，不存在的…
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -275,9 +438,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
